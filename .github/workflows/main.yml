@@ -2,24 +2,25 @@ name: Java CI/CD Pipeline to Tomcat
 
 on:
   push:
-    branches: [ main ]
+    branches: [ main ]   # Trigger on push to main branch
 
 jobs:
-
   build:
     runs-on: [self-hosted, linux]
 
     steps:
-
+      # 1. Checkout code
       - name: Checkout code
         uses: actions/checkout@v4
 
+      # 2. Set up JDK
       - name: Set up JDK 17
         uses: actions/setup-java@v4
         with:
           distribution: 'temurin'
           java-version: '17'
 
+      # 3. Install Maven if missing
       - name: Ensure Maven is installed
         run: |
           if ! command -v mvn &> /dev/null; then
@@ -29,26 +30,26 @@ jobs:
             echo "Maven is already installed"
           fi
           mvn -version
+      # 4. Cache Maven dependencies
+      - name: Cache Maven packages
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.m2/repository
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-maven-
 
+      # 5. Build with Maven
       - name: Build with Maven
-        run: |
-          mvn clean package -DskipTests
+        run: mvn clean package -DskipTests
 
-      - name: Check generated WAR
-        run: |
-          echo "Current directory:"
-          pwd
-          echo "Project files:"
-          ls -la
-          echo "WAR files:"
-          find target -name "*.war" -type f
-
+      # 6. Upload WAR as artifact (optional, for later jobs)
       - name: Upload WAR artifact
         uses: actions/upload-artifact@v4
         with:
           name: myapp
           path: target/*.war
-
 
   deploy:
     runs-on: [self-hosted, linux]
@@ -56,32 +57,21 @@ jobs:
     environment: production
 
     steps:
-
+      # 7. Download WAR artifact
       - name: Download WAR artifact
         uses: actions/download-artifact@v4
         with:
           name: myapp
 
-      - name: Check downloaded WAR
-        run: |
-          echo "Current directory:"
-          pwd
-          echo "Files:"
-          ls -la
-          echo "WAR files:"
-          find . -name "*.war" -type f
-
+      # 8. Deploy WAR via Tomcat Manager
       - name: Deploy to Tomcat
         run: |
-          WAR_FILE=$(find . -maxdepth 2 -name "*.war" -type f | head -1)
-
-          if [ -z "$WAR_FILE" ]; then
-            echo "ERROR: WAR file not found!"
-            exit 1
-          fi
-
+          WAR_FILE=$(ls *.war)
           echo "Deploying $WAR_FILE to Tomcat..."
-          echo "Deploying || ${{ secrets.TOMCAT_USER }} == $secrets.TOMCAT_USER == $TOMCAT_USER.TOMCAT_USER || to Tomcat..."
-
+          echo "chhatrapal == ${{ secrets.TOMCAT_PASSWORD }} == {{ TOMCAT_PASSWORD.TOMCAT_PASSWORD }} == ${{ secrets.TOMCAT_PASSWORD }}"
           curl -v --upload-file "$WAR_FILE" \
-            http://tomcat:root123456@h3.108.60.39:8080/manager/text/deploy?path=/myapp&update=true
+            "http://${{ secrets.TOMCAT_USER }}:${{ secrets.TOMCAT_PASSWORD }}@${{ secrets.TOMCAT_HOST }}/manager/text/deploy?path=/myapp&update=true"
+      # 9. Optional: verify deployment
+      - name: Verify deployment
+        run: |
+          curl -I http://${{ secrets.TOMCAT_HOST }}/myapp
