@@ -49,11 +49,11 @@ jobs:
 
     steps:
       # 5. Download WAR artifact
-      - name: Download WAR artifact
-        uses: actions/download-artifact@v4
-        with:
-          name: myapp
-          path: target/*.war
+      # - name: Download WAR artifact
+      #   uses: actions/download-artifact@v4
+      #   with:
+      #     name: myapp
+          
 
       # 6. Deploy WAR via Tomcat Manager
       - name: Deploy to Tomcat
