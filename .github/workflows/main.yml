@@ -78,7 +78,7 @@ jobs:
   deploy:
     runs-on: [self-hosted, linux]
     needs: build
-    environment: TOMCAT_USER
+    environment: production
 
     steps:
       # 7. Download WAR artifact
@@ -92,13 +92,12 @@ jobs:
         run: |
           WAR_FILE=$(ls *.war)
           echo "Deploying $WAR_FILE to Tomcat..."
-
           curl -v --upload-file "$WAR_FILE" \
-            "http://tomcat:root123456@3.108.60.39:8080/manager/text/deploy?path=/myapp&update=true"
+            "http://${{ secrets.TOMCAT_USER }}:${{ secrets.TOMCAT_PASSWORD }}@${{ secrets.TOMCAT_HOST }}/manager/text/deploy?path=/myapp&update=true"
+     
       # 9. Optional: verify deployment
       - name: Verify deployment
         run: |
-          echo "cpj checke..."
           echo "HOST=$TOMCAT_HOST"
           echo "USER=$TOMCAT_USER"
           curl -I http://${{ secrets.TOMCAT_HOST }}/myapp
