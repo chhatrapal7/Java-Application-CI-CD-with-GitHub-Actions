@@ -32,8 +32,8 @@ jobs:
           mvn -version
 
       # 3. Build with Maven
-      - name: Build with Maven
-        run: mvn clean package -DskipTests
+      # - name: Build with Maven
+      #   run: mvn clean package -DskipTests
 
       # 4. Upload WAR as artifact (optional, for later jobs)
       - name: Upload WAR artifact
