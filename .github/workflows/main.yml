@@ -98,4 +98,7 @@ jobs:
       # 9. Optional: verify deployment
       - name: Verify deployment
         run: |
+          echo "cpj checke..."
+          echo "HOST=$TOMCAT_HOST"
+          echo "USER=$TOMCAT_USER"
           curl -I http://${{ secrets.TOMCAT_HOST }}/myapp
