@@ -78,7 +78,7 @@ jobs:
   deploy:
     runs-on: [self-hosted, linux]
     needs: build
-    environment: production
+    environment: TOMCAT_USER
 
     steps:
       # 7. Download WAR artifact
@@ -98,4 +98,4 @@ jobs:
       # 9. Optional: verify deployment
       - name: Verify deployment
         run: |
-          curl -I http://3.108.60.39:8080/myapp
+          curl -I http://${{ secrets.TOMCAT_HOST }}/myapp
