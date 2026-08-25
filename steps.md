@@ -556,15 +556,15 @@ Java Setup
 Maven
 
    ↓
-
+   
 SonarQube
 
    ↓
-
+   
 Build WAR
 
    ↓
-
+   
 Artifact
 
    ↓
@@ -574,6 +574,7 @@ Tomcat
    ↓
 
 Verify
+
 
 ## What I Learned
 
