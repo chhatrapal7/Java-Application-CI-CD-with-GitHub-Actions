@@ -1,11 +1,11 @@
 # Java Application CI/CD with GitHub Actions
 
-## 1. Project Overview
+## Project Overview
 This project demonstrates an automated CI/CD pipeline for deploying a Java web application to Apache Tomcat using GitHub Actions.
 The pipeline automatically builds the Java application using Maven, performs SonarQube code analysis, stores the generated WAR file as an artifact, and deploys the application to Tomcat.
 
 
-## 2. Architecture / CI-CD Flow
+## Architecture / CI-CD Flow
 
 Developer
 
@@ -58,7 +58,7 @@ Tomcat Deployment
 Verify Application
 
 
-## 3. Prerequisites
+## Prerequisites
 
 - AWS EC2
 - Amazon Linux 2023
@@ -104,7 +104,9 @@ sed -i '21d' apache-tomcat-11.0.25/webapps/manager/META-INF/context.xml
 sed -i '22d' apache-tomcat-11.0.25/webapps/manager/META-INF/context.xml
 sh apache-tomcat-11.0.25/bin/startup.sh
 ```
+
 http://Public IP:8080 
+
 
 ## GitHub Actions Workflow
 
@@ -160,7 +162,7 @@ jobs:
 
 ### GitHub Secrets
 
-In my repository, add these under Settings → Secrets and variables → Actions: -->  Environment secrets
+In my repository, add these under Settings → Secrets and variables → Actions: -->  Environment secrets --> Configure Name production
 
 TOMCAT_USER → t****t
 
@@ -365,9 +367,9 @@ jobs:
             "http://${{ secrets.TOMCAT_USER }}:${{ secrets.TOMCAT_PASSWORD }}@${{ secrets.TOMCAT_HOST }}/manager/text/deploy?path=/myapp&update=true"
 ```
 
-## 11. SonarQube Setup
+## SonarQube Setup
 
-### Launch SonarQube EC2 with t2.medium
+#### Launch SonarQube EC2 with t2.medium
 ```bash
 sudo -i
 
@@ -387,12 +389,12 @@ su - sonar
 #echo "user=admin & password=admin"
 ```
 
-### Run Sonar File 
+#### Run Sonar File 
 ```bash
 sh sonar.sh
 ```
 
-### Start the SOnar
+#### Start the SOnar
 ```bash
 sh /opt/sonarqube-8.9.6.50800/bin/linux-x86-64/sonar.sh start
 ```
@@ -403,12 +405,12 @@ Add Project --> Manuallly --> projectname: hotstar
 
 copy this token --> e52e9d827cf0f5ff8ad765c5dfa229dc8a391d80
 
-### Secrets in GitHub:
+#### Secrets in GitHub:
 
 Go to GitHub repo ---> settings --> secrets and variables --> actions --> Repository secrets --> New Repository secrets
 we can use env secrets or repo secrets also
 
-### Note:     
+#### Note:     
 Repository secrets → available to one repo
 Environment secrets → scoped to specific environments (dev, prod)
 
@@ -472,7 +474,7 @@ jobs:
           name: myapp
           path: target/*.war
 
-      # 6. Install SonarQube Scanner CLI
+      # 7. Install SonarQube Scanner CLI
       - name: Install SonarQube Scanner CLI
         run: |
           if [ ! -d "$HOME/sonar-scanner-cli" ]; then
@@ -483,7 +485,7 @@ jobs:
           fi
           export PATH=$HOME/sonar-scanner-cli/bin:$PATH
           sonar-scanner -v
-      # 7. SonarQube analysis
+      # 8. SonarQube analysis
       - name: SonarQube Analysis
         env:
           SONAR_HOST: ${{ secrets.SONAR_HOST }}
@@ -502,13 +504,13 @@ jobs:
     environment: production
 
     steps:
-      # 7. Download WAR artifact
+      # 9. Download WAR artifact
       - name: Download WAR artifact
         uses: actions/download-artifact@v4
         with:
           name: myapp
 
-      # 8. Deploy WAR via Tomcat Manager
+      # 10. Deploy WAR via Tomcat Manager
       - name: Deploy to Tomcat
         run: |
           WAR_FILE=$(ls *.war)
@@ -516,7 +518,7 @@ jobs:
           curl -v --upload-file "$WAR_FILE" \
             "http://${{ secrets.TOMCAT_USER }}:${{ secrets.TOMCAT_PASSWORD }}@${{ secrets.TOMCAT_HOST }}/manager/text/deploy?path=/myapp&update=true"
      
-      # 9. Optional: verify deployment
+      # 11. Optional: verify deployment
       - name: Verify deployment
         run: |
           echo "HOST=$TOMCAT_HOST"
@@ -530,28 +532,47 @@ jobs:
 curl -I http://${TOMCAT_HOST}/myapp
 ```
 
-## 15. Final CI/CD Flow
+## Final CI/CD Flow
 
 Push code
+
    ↓
+
 GitHub Actions Trigger
+
    ↓
+   
 Self-hosted Runner
+
    ↓
 Checkout
+
    ↓
+   
 Java Setup
+
    ↓
+
 Maven
+
    ↓
+
 SonarQube
+
    ↓
+
 Build WAR
+
    ↓
+
 Artifact
+
    ↓
+
 Tomcat
+
    ↓
+
 Verify
 
 ## What I Learned
@@ -566,5 +587,3 @@ Verify
 - SonarQube
 - Tomcat deployment
 - CI/CD automation
-
-## Troubleshooting
