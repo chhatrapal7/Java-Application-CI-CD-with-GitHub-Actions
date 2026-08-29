@@ -1,4 +1,4 @@
-# 🚀 Java Application CI/CD with GitHub Actions
+# Java Application CI/CD with GitHub Actions
 
 A complete **CI/CD pipeline for a Java Web Application** using **GitHub Actions, Self-Hosted Runner, Maven, SonarQube, and Apache Tomcat**.
 
@@ -6,7 +6,7 @@ In this project, a Disney+ Hotstar-inspired Java web application is automaticall
 
 ---
 
-# 📖 Project Overview
+# Project Overview
 
 The purpose of this project is to implement an automated **CI/CD pipeline** for a Java Web Application.
 
@@ -29,7 +29,31 @@ This removes many repetitive manual deployment activities and provides a consist
 
 ---
 
-# ☁️ What is CI/CD?
+# 📁 Repository Structure
+
+The project repository is organized approximately as follows:
+
+```text
+Java-Application-CI-CD-with-GitHub-Actions/
+│
+├── .github/
+│   └── workflows/
+│       └── main.yml
+│
+├── src/
+│   ├── main/
+│   └── test/
+│
+├── pom.xml
+│
+├── README.md
+│
+└── step.md
+```
+
+---
+
+# What is CI/CD?
 
 ## CI — Continuous Integration
 
@@ -57,7 +81,7 @@ In this project, the pipeline automatically deploys the generated WAR file to Ap
 
 ---
 
-# 🤔 Why Do We Need CI/CD?
+# Why Do We Need CI/CD?
 
 Without CI/CD, many software delivery activities are performed manually.
 
@@ -77,16 +101,16 @@ When these activities happen frequently, the process becomes repetitive and time
 
 CI/CD automates these activities and makes the software delivery process more:
 
-* ⚡ Fast
-* 🤖 Automated
-* 🔄 Consistent
-* 🔐 Controlled
-* ✅ Reliable
-* 📈 Scalable
+* Fast
+* Automated
+* Consistent
+* Controlled
+* Reliable
+* Scalable
 
 ---
 
-# 🔄 Project CI/CD Flow
+# Project CI/CD Flow
 
 ```text
                   ┌──────────────────┐
@@ -160,7 +184,7 @@ CI/CD automates these activities and makes the software delivery process more:
 
 ---
 
-# 🛠️ Technologies Used
+# Technologies Used
 
 | Technology         | Purpose                               |
 | ------------------ | ------------------------------------- |
@@ -178,7 +202,7 @@ CI/CD automates these activities and makes the software delivery process more:
 
 ---
 
-# 🏗️ Project Architecture
+# Project Architecture
 
 The project uses AWS EC2 instances for the required infrastructure.
 
@@ -214,7 +238,7 @@ The project uses AWS EC2 instances for the required infrastructure.
 ---
 
 
-# 🖥️ Self-Hosted Runner
+# Self-Hosted Runner
 
 Instead of using only GitHub-hosted infrastructure, this project uses a **Self-Hosted Runner**.
 
@@ -238,7 +262,7 @@ This provides more control over the execution environment.
 
 ---
 
-# 🔍 SonarQube Analysis
+# SonarQube Analysis
 
 SonarQube is used to analyze the source code and identify potential code quality issues.
 
@@ -254,7 +278,7 @@ SonarQube provides a centralized view of the application's code quality.
 
 ---
 
-# 📦 Artifact Management
+# Artifact Management
 
 After the Maven build, the generated WAR file is treated as a build artifact.
 
@@ -278,7 +302,7 @@ The deployment job can download the WAR artifact produced by the build job.
 
 ---
 
-# 🚀 Tomcat Deployment
+# Tomcat Deployment
 
 Apache Tomcat is used as the Java web application server.
 
@@ -294,7 +318,7 @@ The application is deployed with a context path such as:
 
 ---
 
-# ✅ Application Verification
+# Application Verification
 
 After deployment, the pipeline verifies whether the application is accessible.
 
@@ -310,7 +334,7 @@ The goal is to detect deployment problems immediately rather than relying only o
 
 ---
 
-# 🔐 GitHub Secrets
+# GitHub Secrets
 
 Sensitive information should not be written directly inside the workflow file.
 
@@ -335,28 +359,6 @@ ${{ secrets.TOMCAT_HOST }}
 This helps prevent sensitive credentials from being exposed in the source code.
 
 ---
-
-# 📁 Repository Structure
-
-The project repository is organized approximately as follows:
-
-```text
-Java-Application-CI-CD-with-GitHub-Actions/
-│
-├── .github/
-│   └── workflows/
-│       └── main.yml
-│
-├── src/
-│   ├── main/
-│   └── test/
-│
-├── pom.xml
-│
-├── README.md
-│
-└── step.md
-```
 
 ### Important files
 
@@ -441,7 +443,7 @@ Through this project, I gained practical experience with:
 
 ---
 
-# ⭐ Benefits of This CI/CD Project
+# Benefits of This CI/CD Project
 
 The biggest benefit is **automation**.
 
@@ -479,69 +481,19 @@ Automatic Verification
 
 ### Key Benefits
 
-* ⚡ Faster software delivery
-* 🤖 Less manual work
-* 🔄 Repeatable deployment process
-* ✅ Consistent build and deployment
-* 🔍 Automated code quality analysis
-* 📦 Proper artifact management
-* 🚀 Automated Tomcat deployment
-* 🛠️ Easier troubleshooting through pipeline logs
-* 📈 Better foundation for scalable DevOps practices
+* Faster software delivery
+* Less manual work
+* Repeatable deployment process
+* Consistent build and deployment
+* Automated code quality analysis
+* Proper artifact management
+* Automated Tomcat deployment
+* Easier troubleshooting through pipeline logs
+* Better foundation for scalable DevOps practices
 
 ---
 
-# 🎯 Why This Project is Important
-
-This project demonstrates how multiple DevOps tools can work together as one automated workflow.
-
-Instead of learning GitHub Actions, Maven, SonarQube, Tomcat, Linux, and AWS separately, this project connects them into a practical CI/CD implementation.
-
-The complete flow is:
-
-```text
-Source Code
-     ↓
-Version Control
-     ↓
-CI/CD Automation
-     ↓
-Build
-     ↓
-Code Quality
-     ↓
-Artifact
-     ↓
-Deployment
-     ↓
-Verification
-```
-
-This represents an important part of a real-world DevOps workflow.
-
----
-
-# 🔗 Project Repository
-
-The complete source code and implementation details are available here:
-
-**GitHub Repository:**
-
-https://github.com/chhatrapal7/Java-Application-CI-CD-with-GitHub-Actions
-
-The repository contains:
-
-* `README.md`
-* `step.md`
-* Source code
-* GitHub Actions workflow
-* `pom.xml`
-* Screenshots
-* Complete project implementation details
-
----
-
-# 👨‍💻 Project Summary
+# Project Summary
 
 This project demonstrates a complete Java application CI/CD pipeline using:
 
@@ -569,7 +521,7 @@ The project helped me understand how to automate the journey from **developer co
 
 ---
 
-# 🙌 Conclusion
+# Conclusion
 
 CI/CD is not only about making deployment faster.
 
