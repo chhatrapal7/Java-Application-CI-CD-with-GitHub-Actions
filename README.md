@@ -29,7 +29,7 @@ This removes many repetitive manual deployment activities and provides a consist
 
 ---
 
-# 📁 Repository Structure
+# Repository Structure
 
 The project repository is organized approximately as follows:
 
